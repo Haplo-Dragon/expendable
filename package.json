@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/Haplo-Dragon/expendable#readme",
   "devDependencies": {
-    "eslint": "^7.0.0",
     "typescript": "^3.9.2"
   }
 }
