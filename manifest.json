@@ -1,8 +1,8 @@
 {
+  "manifest_version": 2,
   "name": "expendable",
   "version": "1.0.0",
   "description": "A Firefox extension to create single-use bookmarks.",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
@@ -20,5 +20,20 @@
   "homepage": "https://github.com/Haplo-Dragon/expendable#readme",
   "devDependencies": {
     "typescript": "^3.9.2"
+  },
+  
+  "permissions": [
+    "bookmarks",
+    "tabs"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/star-expendable.png",
+    "default_title:": "Expendable"
+  },
+
+  "background": {
+    "scripts": ["dist/background.js"]
   }
+
 }
