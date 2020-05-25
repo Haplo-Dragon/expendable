@@ -20,35 +20,11 @@
   "browser_action": {
     "browser_style": true,
     "default_icon": "icons/star-expendable-48.png",
-    "default_title": "Expendable"
+    "default_title": "Expendable",
+    "default_popup": "popup/expendable_bookmark.html"
   },
 
   "background": {
     "scripts": ["dist/background.js"]
   }
-
-  // ==== PROPERTIES FROM PACKAGE.JSON ====
-
-  // "scripts": {
-  //   "test": "echo \"Error: no test specified\" && exit 1",
-  //   "tsc": "tsc",
-  //   "tsc:w": "tsc -w"
-  // },
-  // "repository": {
-  //   "type": "git",
-  //   "url": "git+https://github.com/Haplo-Dragon/expendable.git"
-  // },
-
-  // "license": "MIT",
-
-  // "bugs": {
-  //   "url": "https://github.com/Haplo-Dragon/expendable/issues"
-  // },
-  
-  // "homepage": "https://github.com/Haplo-Dragon/expendable#readme",
-  
-  // "devDependencies": {
-  //   "typescript": "^3.9.2"
-  // },
-
 }
