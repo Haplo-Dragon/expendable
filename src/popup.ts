@@ -1,4 +1,5 @@
 const nameText = document.getElementById("Name") as HTMLInputElement
+const pageThumbnail = document.getElementById("page_thumb") as HTMLImageElement
 let current_tab: browser.tabs.Tab
 
 // Send message to background script to create a new expendable bookmark with
@@ -19,9 +20,18 @@ if (add_button) {
 function updateTab(tabs: browser.tabs.Tab[]) {
     if (tabs[0]) {
         current_tab = tabs[0]
+        
+        // Update Name field to the current tab's title.
         if (tabs[0].title) {
             nameText.value = tabs[0].title
         }
+
+        // Display thumbnail of current tab in popup (similar to Firefox's default
+        // bookmark popup).
+        browser.tabs.captureVisibleTab()
+            .then( image_url => {
+                pageThumbnail.src = image_url
+            })
     }
 }
 

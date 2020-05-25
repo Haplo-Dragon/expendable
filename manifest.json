@@ -13,6 +13,7 @@
   "author": "Ethan Fulbright",
   
   "permissions": [
+    "<all_urls>",
     "bookmarks",
     "tabs"
   ],
