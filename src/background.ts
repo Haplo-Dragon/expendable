@@ -77,6 +77,7 @@ function addExpendableBookmark(bookmark: browser.bookmarks.BookmarkTreeNode) {
 function removeExpendableBookmark(tab: browser.tabs.Tab) {
     console.log(
         `Looking for expendable bookmark in tab ${tab.title} with url ${tab.url}`)
+    
     browser.bookmarks.search( {url: tab.url} )
         .then( bookmark_items => {                        
             return bookmark_items[0]
@@ -85,23 +86,21 @@ function removeExpendableBookmark(tab: browser.tabs.Tab) {
         .then( current_bookmark => {
             if (current_bookmark) {
                 console.log("Found bookmark with current tab info:")
-                console.log(current_bookmark)
-                console.log(
-                    `Current bookmark is in expendable set: 
-                    ${isExpendable(current_bookmark)}`)
-                console.log("Expendable set:")
-                console.log(expendable_bookmark_set)
+                console.log(current_bookmark.title, current_bookmark.url)
             }
     
             if (isExpendable(current_bookmark)) {
-                console.log(
-                    `Removing expendable bookmark: ${current_bookmark.title}`)
-                expendable_bookmark_set.delete(current_bookmark.id)
+                // expendable_bookmark_set.delete(current_bookmark.id)
+                console.log(`Removing expendable bookmark ${current_bookmark.title}`)
                 browser.bookmarks.remove(current_bookmark.id)
             }
         })
         .catch( error => {
-            console.log("Couldn't remove expendable bookmark: $[error}")
+            if (error) {
+                console.log("Couldn't remove expendable bookmark: ${error}")
+            } else {
+                console.log("Loaded tab is not expendable.")
+            }
         })
 }
 
@@ -118,17 +117,30 @@ function handleMessage(message: any) {
 function handleOutsideBookmarkCreation(
     id: string,
     bookmark: browser.bookmarks.BookmarkTreeNode) {
-    if (bookmark.parentId && bookmark.parentId === FOLDER_ID) {
+    console.log(`Outside bookmark created: ${bookmark.title} at ${bookmark.url}`)
+    if (bookmark.parentId === FOLDER_ID) {
+        console.log("Bookmark was created in expendable folder!")
         addExpendableBookmark(bookmark)
     }    
 }
 
-function handleOutsideBookmarkRemoval(
-    id: string,
-    remove_info: any) {
+function handleOutsideBookmarkRemoval(id: string, remove_info: any) {
     if (remove_info.parentId === FOLDER_ID) {
-        expendable_bookmark_set.delete(remove_info.node.id)
-        console.log(`Removed expendable bookmark ${remove_info.node.title}.`)
+        expendable_bookmark_set.delete(remove_info.node.id)        
+    }
+}
+
+function handleOutsideBookmarkMove(bookmark_id: string, move_info: any) {
+    // If the bookmark was moved INTO expendable folder, we need to add it.
+    if (move_info.parentId === FOLDER_ID) {
+        expendable_bookmark_set.add(bookmark_id)
+        console.log("New bookmark moved into expendable folder.")
+    }
+
+    // If the bookmark was moved OUT of expendable folder, we need to remove it.
+    else if (move_info.oldParentId === FOLDER_ID) {
+        expendable_bookmark_set.delete(bookmark_id)
+        console.log("Bookmark moved out of expendable folder.")
     }
 }
 
@@ -154,46 +166,8 @@ browser.tabs.onUpdated.addListener(handleTabUpdate, filter)
 browser.bookmarks.onCreated.addListener(handleOutsideBookmarkCreation)
 // Listen for removal of bookmarks.
 browser.bookmarks.onRemoved.addListener(handleOutsideBookmarkRemoval)
+// Listen for bookmarks being moved into/out of the expendable folder.
+browser.bookmarks.onMoved.addListener(handleOutsideBookmarkMove)
 
 // Listen for creation of new bookmarks from the expendable popup.
 browser.runtime.onMessage.addListener(handleMessage)
-
-// // Listen for tab switching? Might not be necessary; may cause more problems than
-// // it solves.
-// browser.tabs.onActivated.addListener(removeExpendableBookmark)
-
-
-// // OLD REMOVE EXPENDABLE BOOKMARK IMPLEMENTATION
-    // browser.tabs.query({active: true, currentWindow:true, status: "complete"})
-    //     .then( tabs => {
-    //         if (tabs[0]) {
-    //             console.log(
-    //                 `Looking for expendable bookmark in tab ${tabs[0].title}
-    //                  with url ${tabs[0].url}`)
-    //             browser.bookmarks.search( {title: tabs[0].title} )
-    //                 .then( bookmark_items => {                        
-    //                     return bookmark_items[0]
-    //                 })
-    //                 .then( current_bookmark => {
-    //                     if (current_bookmark) {
-    //                         console.log("Found bookmark with current tab info:")
-    //                         console.log(current_bookmark)
-    //                         console.log(
-    //                             `Current bookmark is in expendable set: 
-    //                             ${isExpendable(current_bookmark)}`)
-    //                         console.log("Expendable set:")
-    //                         console.log(expendable_bookmark_set)
-    //                     }
-    //                     if (isExpendable(current_bookmark)) {
-    //                         console.log(
-    //                             `Removing expendable bookmark:
-    //                             ${current_bookmark.title}`)
-    //                         expendable_bookmark_set.delete(current_bookmark.id)
-    //                         browser.bookmarks.remove(current_bookmark.id)
-    //                     }
-    //                 })
-    //                 .catch( error => {
-    //                     console.log("Couldn't remove expendable bookmark: $[error}")
-    //                 })
-    //         }
-    //     })
