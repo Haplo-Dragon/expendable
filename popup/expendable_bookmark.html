@@ -5,23 +5,25 @@
     <link rel="stylesheet" href="expendable_bookmark.css"/>
 </head>
 
-<body>
+<body>        
     <div class="popup-exp">
         <p class="title">Create New Expendable Bookmark</p>
-        <hr>
+        <!-- <hr> -->
+        
         
         <div class="pg-thumbnail">
             <img id="page_thumb" alt="Thumbnail of the current page">
         </div>
 
-        <label for="Name">Name:
-            <input type="text" id="Name" class="name">
-        </label>
-
-        <div class="actions">
-            <button id="btn-add" type="button">Test expendable bookmark</button>
+        <div class="name-container">
+            <label for="Name">Name:
+                <p><input type="text" id="Name" class="name"></p>
+            </label>
         </div>
 
+        <button id="btn-add" type="button" class="add">Test expendable bookmark</button>
+
     </div>
+    
     <script type="text/javascript" src="../dist/popup.js"></script>
 </body>
