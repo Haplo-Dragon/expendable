@@ -51,9 +51,9 @@ function createExpendableBookmark(bookmark_title: string, bookmark_url: string) 
     let bookmark_details = getBookmarkDetails(bookmark_title, bookmark_url)
 
     browser.bookmarks.create(bookmark_details)
-        .then( new_bookmark_node => {
-            addExpendableBookmark(new_bookmark_node)
-        })
+        // .then( new_bookmark_node => {
+        //     // addExpendableBookmark(new_bookmark_node)
+        // })
         .catch( error => {
             console.log(`Couldn't create new expendable bookmark: ${error}`)
         })
@@ -72,6 +72,12 @@ function getBookmarkDetails(bookmark_title: string, bookmark_url: string) {
 function addExpendableBookmark(bookmark: browser.bookmarks.BookmarkTreeNode) {
     expendable_bookmark_set.add(bookmark.id)
     console.log(`Added new expendable bookmark ${bookmark.title}.`)
+    
+    browser.notifications.create( {
+        type: "basic",
+        title: "Expendable Bookmark Created!",
+        message: `New expendable bookmark created: ${bookmark.title}`
+    })
 }
 
 function removeExpendableBookmark(tab: browser.tabs.Tab) {
@@ -127,6 +133,12 @@ function handleOutsideBookmarkCreation(
 function handleOutsideBookmarkRemoval(id: string, remove_info: any) {
     if (remove_info.parentId === FOLDER_ID) {
         expendable_bookmark_set.delete(remove_info.node.id)        
+
+        browser.notifications.create( {
+        type: "basic",
+        title: "Expendable Bookmark Removed!",
+        message: ""
+        })
     }
 }
 
