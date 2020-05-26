@@ -1,5 +1,6 @@
 const FOLDER_NAME = "Expendable Bookmarks"
 let FOLDER_ID: string
+const NOTIFICATION_ICON = "icons/star-expendable-48.png"
 // We'll keep track of expendable bookmarks by their Firefox-assigned id.
 const expendable_bookmark_set = new Set<string>()
 
@@ -76,7 +77,8 @@ function addExpendableBookmark(bookmark: browser.bookmarks.BookmarkTreeNode) {
     browser.notifications.create( {
         type: "basic",
         title: "Expendable Bookmark Created!",
-        message: `New expendable bookmark created: ${bookmark.title}`
+        message: `New expendable bookmark created: ${bookmark.title}`,
+        iconUrl: NOTIFICATION_ICON
     })
 }
 
@@ -137,7 +139,8 @@ function handleOutsideBookmarkRemoval(id: string, remove_info: any) {
         browser.notifications.create( {
         type: "basic",
         title: "Expendable Bookmark Removed!",
-        message: ""
+        message: "",
+        iconUrl: NOTIFICATION_ICON
         })
     }
 }
