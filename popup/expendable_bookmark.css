@@ -11,6 +11,7 @@
 .title {
     margin: none;
     text-align: center;
+    border-bottom: 0.2rem solid grey;
 }
 
 #page_thumb {
@@ -19,6 +20,10 @@
 
 .name-container {
     /*font-size: 0.7rem;*/
+}
+
+.name {
+    min-width: 20rem;
 }
 
 .add {
@@ -32,4 +37,5 @@
 
 .add:hover {
     background: DarkViolet;
+    transition: 0.3s;
 }
