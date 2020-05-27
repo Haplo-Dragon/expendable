@@ -38,7 +38,7 @@ function init_expendable_bookmarks() {
             buildSet(items[0])
             
             // console.log("Expendable bookmark set initialized:")         
-            console.log(expendable_bookmark_set)
+            // console.log(expendable_bookmark_set)
         })
         .catch ( error => {
             console.log(
@@ -65,10 +65,10 @@ function buildSet(bookmark_item: browser.bookmarks.BookmarkTreeNode) {
 
 function createExpendableBookmark(bookmark_title: string, bookmark_url: string) {
     // Avoid duplicate expendable bookmarks.
-    alreadyExists(bookmark_url)
-        .then( bookmark_already_exists => {
+    isDuplicate(bookmark_url)
+        .then( bookmark_is_duplicate => {
             // If it's a new bookmark (that is, NOT a duplicate), we'll create it.
-            if (!bookmark_already_exists) {
+            if (!bookmark_is_duplicate) {
                 let bookmark_details = getBookmarkDetails(bookmark_title, bookmark_url)
 
                 browser.bookmarks.create(bookmark_details)            
@@ -89,7 +89,7 @@ function getBookmarkDetails(bookmark_title: string, bookmark_url: string) {
     return bookmark_details
 }
 
-function alreadyExists(bookmark_url: string) {
+function isDuplicate(bookmark_url: string) {
     // If the bookmark already exists in the expendables folder, we don't want
     // to create it again.
     return browser.bookmarks.search( {url: bookmark_url})
