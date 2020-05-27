@@ -18,11 +18,11 @@ function init_expendable_bookmarks() {
     browser.bookmarks.search( {title: FOLDER_NAME})
         .then( items => {
             if (items.length > 0) {
-                console.log("Found expendable folder.")
+                // console.log("Found expendable folder.")
             } else {
                 // If the expendable folder doesn't exist, we'll create it, then grab
                 // its ID.
-                console.log("Expendable bookmarks folder not found, creating...")
+                // console.log("Expendable bookmarks folder not found, creating...")
                 browser.bookmarks.create( {title: FOLDER_NAME} )
                     .then (new_expendable_folder => {
                         FOLDER_ID = new_expendable_folder.id
@@ -33,11 +33,11 @@ function init_expendable_bookmarks() {
         })
         // Record the expendable folder's ID and keep track of any bookmarks in it.
         .then ( items => {            
-            console.log("Found subtree, recording ID and adding bookmarks to set...")            
+            // console.log("Found subtree, recording ID and adding bookmarks to set...")            
             FOLDER_ID = items[0].id
             buildSet(items[0])
             
-            console.log("Expendable bookmark set initialized:")         
+            // console.log("Expendable bookmark set initialized:")         
             console.log(expendable_bookmark_set)
         })
         .catch ( error => {
@@ -75,7 +75,7 @@ function createExpendableBookmark(bookmark_title: string, bookmark_url: string) 
                     .catch( error => {
                         console.log(`Couldn't create new expendable bookmark: ${error}`)
                     })
-                        }
+            }
         })
 }
 
@@ -98,11 +98,11 @@ function alreadyExists(bookmark_url: string) {
             return bookmark_items[0]
         })
         .then( found_bookmark => {
-            console.log("Checking found bookmark for expendableness...")
+            // console.log("Checking found bookmark for expendableness...")
             // If that bookmark exists and it's also in the expendable folder, we
             // know it's a duplicate.
             if (found_bookmark && isExpendable(found_bookmark)) {
-                console.log("Already have expendable bookmark here.")
+                // console.log("Already have expendable bookmark here.")
                 return true
             }
         })
@@ -118,7 +118,7 @@ function addExpendableBookmark(bookmark: browser.bookmarks.BookmarkTreeNode) {
     if (!expendable_bookmark_set.has(bookmark.id)) {
         expendable_bookmark_set.add(bookmark.id)
         
-        console.log(`Added new expendable bookmark ${bookmark.title}.`)
+        // console.log(`Added new expendable bookmark ${bookmark.title}.`)
         
         browser.notifications.create( {
             type: "basic",
@@ -133,15 +133,12 @@ function addExpendableBookmark(bookmark: browser.bookmarks.BookmarkTreeNode) {
                     NOTIFICATION_TIMEOUT_MILLISECONDS)
             })
     } else {
-        console.log("Already had an expendable bookmark here.")
+        // console.log("Already had an expendable bookmark here.")
     }
 }
 
-function removeExpendableBookmark(tab: browser.tabs.Tab) {
-    console.log(
-        `Looking for expendable bookmark in tab ${tab.title} with url ${tab.url}`)
-    
-    // Search for an bookmark with the current tab's URL.
+function removeExpendableBookmark(tab: browser.tabs.Tab) { 
+    // Search for a bookmark with the current tab's URL.
     browser.bookmarks.search( {url: tab.url} )
         .then( bookmark_items => {                        
             return bookmark_items[0]
@@ -149,21 +146,25 @@ function removeExpendableBookmark(tab: browser.tabs.Tab) {
         
         .then( current_bookmark => {
             if (current_bookmark) {
-                console.log("Found bookmark with current tab info:")
-                console.log(current_bookmark.title, current_bookmark.url)
+                // console.log("Found bookmark with current tab info:")
+                // console.log(current_bookmark.title, current_bookmark.url)
+            } else {
+                // console.log("Current tab is not bookmarked.")
+                return
             }
     
             // If the bookmark exists and is expendable, we'll remove it.
             if (isExpendable(current_bookmark)) {
-                console.log(`Removing expendable bookmark ${current_bookmark.title}`)
+                // console.log(`Removing expendable bookmark ${current_bookmark.title}`)
                 browser.bookmarks.remove(current_bookmark.id)
+            } else {
+                // console.log("Loaded bookmark is not expendable.")
+                return
             }
         })
         .catch( error => {
             if (error) {
                 console.log(`Couldn't remove expendable bookmark: ${error}`)
-            } else {
-                console.log("Loaded tab is not expendable.")
             }
         })
 }
@@ -181,10 +182,8 @@ function handleMessage(message: any) {
 function handleOutsideBookmarkCreation(
     id: string,
     bookmark: browser.bookmarks.BookmarkTreeNode) {
-    console.log(`Outside bookmark created: ${bookmark.title} at ${bookmark.url}`)
     // We only care about bookmarks being created in the expendable folder.
     if (bookmark.parentId === FOLDER_ID) {
-        console.log("Bookmark was created in expendable folder!")
         addExpendableBookmark(bookmark)
     }    
 }
@@ -213,13 +212,11 @@ function handleOutsideBookmarkMove(bookmark_id: string, move_info: any) {
     // If the bookmark was moved INTO expendable folder, we need to add it.
     if (move_info.parentId === FOLDER_ID) {
         expendable_bookmark_set.add(bookmark_id)
-        console.log("New bookmark moved into expendable folder.")
     }
 
     // If the bookmark was moved OUT of expendable folder, we need to remove it.
     else if (move_info.oldParentId === FOLDER_ID) {
         expendable_bookmark_set.delete(bookmark_id)
-        console.log("Bookmark moved out of expendable folder.")
     }
 }
 
