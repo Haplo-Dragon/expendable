@@ -27,6 +27,8 @@
   },
 
   "background": {
-    "scripts": ["dist/background.js"]
+    "scripts": [
+      "node_modules/webextension-polyfill/dist/browser_polyfill.js"
+      "dist/background.js"]
   }
 }
