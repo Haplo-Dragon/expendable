@@ -53,7 +53,7 @@ function init_expendable_bookmarks() {
 function buildSet(bookmark_item: browser.bookmarks.BookmarkTreeNode) {
     // We only want bookmarks, not folders or separators.
     if (bookmark_item.url) {
-        console.log(`Initializing bookmark ${bookmark_item.title}`)
+        // console.log(`Initializing bookmark ${bookmark_item.title}`)
         expendable_bookmark_set.add(bookmark_item.id)
     }
 
