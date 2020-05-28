@@ -1,3 +1,6 @@
+// // For webextension-polyfill-ts, if I ever get the imports working.
+// import {browser} from "webextension-polyfill-ts"
+
 const nameText = document.getElementById("Name") as HTMLInputElement
 const pageThumbnail = document.getElementById("page_thumb") as HTMLImageElement
 let current_tab: browser.tabs.Tab

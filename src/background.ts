@@ -1,3 +1,6 @@
+// For webextension-polyfill-ts, if I ever get the imports working.
+// import {browser, Tabs} from "webextension-polyfill-ts"
+
 // We'll keep track of the expendable bookmarks folder by its ID, allowing it
 // to be moved or renamed if the user wants.
 const FOLDER_NAME = "Expendable Bookmarks"
@@ -232,6 +235,8 @@ function handleTabUpdate(tabId: number, changeInfo: any, tab: browser.tabs.Tab) 
 // are fully loaded and in the current window.
 const filter = {
     properties: new Array<browser.tabs.UpdatePropertyName>("status"),
+    // // Version for webextension-polyfill-ts:
+    // properties: new Array<Tabs.UpdatePropertyName>("status"),
     windowId: browser.windows.WINDOW_ID_CURRENT
 
 }
