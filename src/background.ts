@@ -6,7 +6,7 @@
 const FOLDER_NAME = "Expendable Bookmarks"
 let FOLDER_ID: string
 
-const NOTIFICATION_ICON = "icons/star-expendable-48.png"
+const NOTIFICATION_ICON = "icons/star-expendable-96.png"
 const NOTIFICATION_TIMEOUT_MILLISECONDS = 3000
 
 // We'll keep track of expendable bookmarks by their Firefox-assigned id.
