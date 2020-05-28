@@ -15,7 +15,7 @@ function createBookmark() {
         })
 }
 
-let add_button = document.getElementById("btn-add")
+const add_button = document.getElementById("btn-add")
 if (add_button) {
     add_button.addEventListener("click", createBookmark)
 }
