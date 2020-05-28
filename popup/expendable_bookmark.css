@@ -27,7 +27,8 @@
 }
 
 .add {
-    background: DarkMagenta;
+    /*Firefox Colors - Purple 70*/
+    background: #6200a4;
     border: none;
     border-radius: 0.5rem;
     padding: 1.1rem;
@@ -36,6 +37,7 @@
 }
 
 .add:hover {
-    background: DarkViolet;
+    /*Firefox Colors - Purple 40*/
+    background: #ad3bff;
     transition: 0.3s;
 }
