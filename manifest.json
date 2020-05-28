@@ -27,18 +27,7 @@
     "show_matches": ["<all_urls>"]
   },
 
-  // "browser_action": {
-  //   "browser_style": true,
-  //   "default_icon": "icons/star-expendable-48.png",
-  //   "default_title": "Expendable",
-  //   "default_popup": "popup/expendable_bookmark.html"
-  // },
-
   "background": {
-    // // Might be needed for webextension-polyfill-ts (if I ever get imports working)?
-    // "page": "src/background.html"
-    "scripts": [
-      // "node_modules/webextension-polyfill-ts/lib/index.js",
-      "dist/background.js"]
+    "scripts": ["dist/background.js"]
   }
 }
