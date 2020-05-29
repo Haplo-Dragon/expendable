@@ -1,0 +1,33 @@
+{
+  "manifest_version": 2,
+  "name": "expendable",
+  "version": "1.0.0",
+  
+  "description": "A Firefox extension to create single-use bookmarks.",
+  "homepage_url": "https://github.com/Haplo-Dragon/expendable/issues",
+  "icons": {
+    "48": "icons/star-expendable-48.png",
+    "96": "icons/star-expendable-96.png"
+  },
+  
+  "author": "Ethan Fulbright",
+  
+  "permissions": [
+    "<all_urls>",
+    "bookmarks",
+    "notifications",
+    "tabs"
+  ],
+
+  "page_action": {
+    "browser_style": true,
+    "default_icon": "icons/star-expendable-96.png",
+    "default_title": "Add expendable bookmark for this page",
+    "default_popup": "popup/expendable_bookmark.html",
+    "show_matches": ["<all_urls>"]
+  },
+
+  "background": {
+    "scripts": ["dist/background.js"]
+  }
+}

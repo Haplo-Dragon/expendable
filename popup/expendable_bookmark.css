@@ -1,0 +1,43 @@
+.popup-exp {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-row-gap: 0.8rem;
+    align-items: center;
+    margin: 0.8rem;
+
+    font-size: 1rem;
+}
+
+.title {
+    margin: none;
+    text-align: center;
+    border-bottom: 0.2rem solid grey;
+}
+
+#page_thumb {
+    max-height: 11rem;
+}
+
+.name-container {
+    /*font-size: 0.7rem;*/
+}
+
+.name {
+    min-width: 20rem;
+}
+
+.add {
+    /*Firefox Colors - Purple 70*/
+    background: #6200a4;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 1.1rem;
+    text-align: center;
+    color: white;
+}
+
+.add:hover {
+    /*Firefox Colors - Purple 40*/
+    background: #ad3bff;
+    transition: 0.3s;
+}
